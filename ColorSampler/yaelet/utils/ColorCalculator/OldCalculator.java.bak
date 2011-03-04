@@ -1,0 +1,159 @@
+package yaelet.utils.ColorCalculator;
+
+import java.awt.Image;
+import java.awt.image.PixelGrabber;
+import java.util.Arrays;
+
+public class OldCalculator {
+
+	
+	Image m_objImage;
+	int m_iImageWidth;
+	int m_iImageHeight;
+	int[] m_iImageColors;
+	int[][] m_iPixelColors;
+	int[][] m_iPixelBalance;
+	
+	int redAverage = 0;
+	int greenAverage = 0;
+	int blueAverage = 0;
+	
+	final int redOffset = 	0xff0000;
+	final int redShift = 16;
+	final int greenOffset = 0x00ff00;
+	final int greenShift = 8;
+	final int blueOffset = 	0x0000ff;
+	final int blueShift = 0;
+	
+	
+	static boolean is8BitImage(PixelGrabber pg) {
+	    return pg.getPixels() instanceof byte[];
+	}
+	
+	public OldCalculator(Image image)
+	{
+		this.m_objImage = image;
+	}
+	
+	/*
+	 * @brief get the colors to an integer array
+	 */
+	public boolean Init() throws InterruptedException
+	{
+		//Image image = Toolkit.getDefaultToolkit().getImage("inFile.png");
+
+	    PixelGrabber grabber = new PixelGrabber(m_objImage, 0, 0, -1, -1, false);
+
+	    if (grabber.grabPixels()) {
+	      m_iImageWidth = grabber.getWidth();
+	      m_iImageHeight = grabber.getHeight();
+	      if (is8BitImage(grabber)){
+	    	  return false;
+	      }
+	      else {
+	    	  m_iImageColors = (int[]) grabber.getPixels();
+	    	  return true;
+	      }
+	    }
+	    
+	    return false;
+	}
+	
+	
+
+	public void Calculate()
+	{
+		if (null != m_iImageColors && m_iImageColors.length > 0)
+		{
+			m_iPixelColors = new int[m_iImageColors.length][3];
+			m_iPixelBalance = new int[256][3];
+			for (int i = 0; i < m_iImageColors.length; i++) {
+				m_iPixelColors[i][0] = getRedColor(m_iImageColors[i]);
+				m_iPixelBalance[m_iPixelColors[i][0]][0]++;
+				m_iPixelColors[i][1] = getGreenColor(m_iImageColors[i]);
+				m_iPixelBalance[m_iPixelColors[i][1]][1]++;
+				m_iPixelColors[i][2] = getBlueColor(m_iImageColors[i]);
+				m_iPixelBalance[m_iPixelColors[i][2]][2]++;
+				
+				if (i % m_iImageHeight == -1)
+				{
+					printRGB(m_iPixelColors[i]);
+				}
+				// keep calculating the average
+				/*
+				redAverage = DebugAddToAverage("red", redAverage, m_iPixelColors[i][0], i);
+				greenAverage = DebugAddToAverage("green", greenAverage, m_iPixelColors[i][1], i);
+				blueAverage = DebugAddToAverage("blue", blueAverage, m_iPixelColors[i][2], i);
+				*/
+			}
+			System.out.format("R=%d, G=%d, B=%d%n",
+					getBalance(m_iPixelBalance[0]),getBalance(m_iPixelBalance[1]),getBalance(m_iPixelBalance[2]));
+		}
+	}
+
+	private int getGreenColor(int pixel)
+	{
+		return getColor(pixel, greenOffset, greenShift);
+	}
+	
+	private int getRedColor(int pixel)
+	{
+		return getColor(pixel, redOffset, redShift);
+	}
+
+	private int getBlueColor(int pixel)
+	{
+		return getColor(pixel, blueOffset, blueShift);
+	}
+
+	private int getColor(int pixelColor, int offset, int shift)
+	{
+		return ((pixelColor & offset) >> shift);
+	}
+	
+	private int getBalance(int[] ColorBalance)
+	{
+		int balancedAverage = 0;
+		for (int i = 0; i < ColorBalance.length; i++) {
+			balancedAverage += i*ColorBalance[i];
+		}
+		return balancedAverage/ColorBalance.length;
+	}
+	
+	private int getMedian(int[] Colors)
+	{
+		Arrays.sort(Colors);
+		if (Colors.length % 2 == 0)
+		{
+			return (Colors[Colors.length/2] + Colors[Colors.length/2 + 1])/2;
+		}
+		else 
+		{
+			return Colors[(Colors.length + 1)/2];
+		}
+	}
+	
+	private int AddToAverage(int average, int toAdd, int averageSize)
+	{
+		return ((averageSize)*average + toAdd)/(averageSize + 1);
+	}
+	
+	private int DebugAddToAverage(String who, int average, int toAdd, int averageSize)
+	{
+		if (toAdd < 10)
+		{
+			System.out.format("%s: AVG = %d, 2add = %d, size = %d%n", who, average, toAdd, averageSize);
+		}
+		return AddToAverage(average, toAdd, averageSize);
+	}
+	
+	private void printRGB(int[] pixel)
+	{
+		System.out.format(
+				"[%03d,%03d,%03d]%n", 
+				pixel[0], pixel[1], pixel[2]);
+
+
+	} 
+
+}
