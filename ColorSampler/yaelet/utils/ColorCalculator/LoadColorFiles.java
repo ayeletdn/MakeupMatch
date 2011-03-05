@@ -5,7 +5,10 @@ import java.util.TreeMap;
 import java.io.File;
 import java.io.FilenameFilter;
 
-public class LoadColorFiles {
+public class LoadColorFiles implements IManageColors {
+
+	private static final String CompanyColorFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples";
+	private static final String TestFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples\\Testers\\Ayelet.jpg";
 
 
 	private static File[] getFiles(String Path)
@@ -25,6 +28,11 @@ public class LoadColorFiles {
 		
 	}
 	
+	public TreeMap<Integer, String> getColorsTreeMap()
+	{
+		return getColorsFromDir(CompanyColorFilesPath);
+	}
+	
 	public static TreeMap<Integer, String> getColorsFromDir(String Path)
 	{
 		TreeMap<Integer, String> returnValue = new TreeMap<Integer, String>();
@@ -42,6 +50,11 @@ public class LoadColorFiles {
 		}
 		
 		return returnValue;
+	}
+	
+	public int getItemColor()
+	{
+		return getColorsFromFile(TestFilesPath);
 	}
 	
 	public static int getColorsFromFile(String Path)

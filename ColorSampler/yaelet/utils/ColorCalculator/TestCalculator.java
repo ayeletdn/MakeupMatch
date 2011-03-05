@@ -6,14 +6,14 @@ import java.util.TreeMap;
 
 public class TestCalculator {
 
-	private static final String CompanyColorFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples";
-	private static final String TestFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples\\Testers\\Ayelet.jpg";
 	
 	public static void main(String[] args)
 	{
 		
+		IManageColors ColorGetter = new LoadColorFiles();
+		
 		// get the makeup colors from the sample images
-		TreeMap<Integer, String> colors = LoadColorFiles.getColorsFromDir(CompanyColorFilesPath);
+		TreeMap<Integer, String> colors = ColorGetter.getColorsTreeMap();
 		
 		// DEBUG: print the colors Hash table
 		Iterator<Integer> color = colors.keySet().iterator();
@@ -24,7 +24,7 @@ public class TestCalculator {
 		}
 		
 		// get the color from a tester file
-		int FindMyColor = LoadColorFiles.getColorsFromFile(TestFilesPath);
+		int FindMyColor = ColorGetter.getItemColor();
 		//DEBUG: print the color found in the sample
 		System.out.format("My color is %s%n", Integer.toHexString(FindMyColor));
 
