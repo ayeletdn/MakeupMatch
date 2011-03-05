@@ -1,5 +1,4 @@
 package yaelet.utils.ColorCalculator;
-import java.io.File;
 import java.lang.String;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +7,7 @@ import java.util.TreeMap;
 public class TestCalculator {
 
 	private static final String CompanyColorFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples";
-	private static final String TestFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples\\Testers";
+	private static final String TestFilesPath = "C:\\Users\\Eyal\\Workspace\\MyColorFinder\\Samples\\Testers\\Ayelet.jpg";
 	
 	public static void main(String[] args)
 	{
@@ -27,7 +26,7 @@ public class TestCalculator {
 		// get the color from a tester file
 		int FindMyColor = LoadColorFiles.getColorsFromFile(TestFilesPath);
 		//DEBUG: print the color found in the sample
-		System.out.format("test color is %s%n", Integer.toHexString(FindMyColor));
+		System.out.format("My color is %s%n", Integer.toHexString(FindMyColor));
 
 		Map.Entry<Integer, String> MyMatch = colors.higherEntry(FindMyColor);
 		// the closest product color

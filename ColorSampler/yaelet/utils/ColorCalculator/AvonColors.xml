@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catalog>
+<Product>
+<Name>Almond mark</Name>
+<Color>d19b6f</Color>
+</Product>
+<Product>
+<Name>Golden mark</Name>
+<Color>d5aa7d</Color>
+</Product>
+<Product>
+<Name>Honey mark</Name>
+<Color>daae7d</Color>
+</Product>
+<Product>
+<Name>Natural mark</Name>
+<Color>e2b189</Color>
+</Product>
+	<Product>
+		<Name>Buff mark</Name>
+		<Color>e7bc92</Color></Product>
+	<Product>
+		<Name>Nude mark</Name>
+		<Color>efcda8</Color></Product>
+	<Product>
+		<Name>Ivory mark</Name>
+		<Color>f5d8b6</Color></Product>
+</Catalog>
