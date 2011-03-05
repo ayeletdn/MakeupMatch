@@ -48,9 +48,6 @@ public class LoadColorFiles {
 	{
 		File ImageFile = new File(Path);
 		
-		File f = new File(".");
-		System.out.format("%s%n", f.getAbsolutePath());
-
 		int key = Calculator.getTopColor(ImageFile);
 		return key;
 	}
